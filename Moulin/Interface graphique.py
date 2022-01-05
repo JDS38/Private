@@ -1,87 +1,165 @@
-# L'importation de l’ensemble des éléments du paquet tkinter :
-
 from tkinter import *
+from tkinter.font import names
+from tkinter.ttk import *
+
+root = Tk()
+root.title("Jeu du Moulin®")
+root.geometry('1080x720')
+root.config(bg='#116562')
+
+mainframe = Frame(root)
+mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
+root.columnconfigure(0, weight=1)
+root.rowconfigure(0, weight=1)
+
+s = Style()
+s.configure('TFrame', background='gray')
+
+s2 = Style()
+s2.configure('new.TFrame', background='lightgray')
+
+sousframe1 = Frame(mainframe, relief=SUNKEN, style='new.TFrame')
+sousframe1.grid(row=0, column=0, sticky=(W, E), padx=10, pady=10)
+sousframe2 = Frame(mainframe, relief=SUNKEN, style='new.TFrame')
+sousframe2.grid(row=0, column=1, sticky=(N, E), padx=10, pady=10)
 
 
-# This is a sample Python script.
+can = Canvas(sousframe1, width=500, heigh=500, bg='white')
+can.grid(row=0, column=0, sticky=(W, N), padx=10, pady=5)
 
-# Press Maj+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-def create_grille():
-    n = 7
-    a = [[0] * n for i in range(n)]
-    for i in range(n):
-        for j in range(n):
+can.create_line(10, 10, 490, 10)
+can.create_line(10, 490, 490, 490)
+can.create_line(10, 10, 10, 490)
+can.create_line(490, 10, 490, 490)
 
-            # cadre exterieure
-            if (i == 0 or i == 3 or i == 6) and (j == 0 or j == 3 or j == 6):
-                a[i][j] = '1'
-            # cadre intermediaire
-            if (i == 1 or i == 3 or i == 5) and (j == 1 or j == 3 or j == 5):
-                a[i][j] = '1'
-            # cadre interieure
-            if (i == 2 or i == 3 or i == 4) and (j == 2 or j == 3 or j == 4):
-                a[i][j] = '1'
-            # supprimer le centre
-            if i == 3 and j == 3:
-                a[i][j] = '0'
-    for row in a:
-        print(' '.join([str(elem) for elem in row]))
+can.create_line(80, 80, 420, 80)
+can.create_line(80, 420, 420, 420)
+can.create_line(80, 80, 80, 420)
+can.create_line(420, 80, 420, 420)
 
-def fenetre_graph():
-    # Creation d'une fenêtre avec la classe Tk :
+can.create_line(150, 150, 350, 150)
+can.create_line(150, 350, 350, 350)
+can.create_line(150, 150, 150, 350)
+can.create_line(350, 150, 350, 350)
 
-    fenetre = Tk()
-    # Ajout d'un titre à la fenêtre principale :
-    fenetre.title("Moulin")
-    # Définir les dimensions par défaut la fenêtre principale :
-    fenetre.geometry("600x600")
-    # Limiter les dimensions d’affichage de la fenêtre principale :
-    fenetre.maxsize(900, 900)
-    fenetre.minsize(500, 500)
-    fenetre.config(bg="#ffe680")
-
-    # Canvas
-    canvas = Canvas(fenetre)
-    canvas.pack()
-    canvas.config(width=450, height=450)
-
-    n = 7
-    for i in range(n):
-        for j in range(n):
-            # cadre exterieure
-            line = canvas.create_line(50, 50, 50, 400, fill='black', width=5)
-            line = canvas.create_line(400, 50, 400, 400, fill='black', width=5)
-            line = canvas.create_line(50, 50, 400, 50, fill='black', width=5)
-            line = canvas.create_line(50, 400, 400, 400, fill='black', width=5)
-            # cadre intermediaire
-
-            line = canvas.create_line(100, 100, 100, 350, fill='black', width=5)
-            line = canvas.create_line(350, 100, 350, 350, fill='black', width=5)
-            line = canvas.create_line(100, 100, 350, 100, fill='black', width=5)
-            line = canvas.create_line(100, 350, 350, 350, fill='black', width=5)
-
-            # cadre interieure
-
-            line = canvas.create_line(150, 150, 150, 300, fill='black', width=5)
-            line = canvas.create_line(300, 150, 300, 300, fill='black', width=5)
-            line = canvas.create_line(150, 150, 300, 150, fill='black', width=5)
-            line = canvas.create_line(150, 300, 300, 300, fill='black', width=5)
-
-            # ligne croisé
-
-            line = canvas.create_line(225, 50, 225, 150, fill='black', width=5)
-            line = canvas.create_line(225, 300, 225, 400, fill='black', width=5)
-            line = canvas.create_line(50, 225, 150, 225, fill='black', width=5)
-            line = canvas.create_line(300, 225, 400, 225, fill='black', width=5)
-
-    fenetre.mainloop()
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print()
-    create_grille()
-    fenetre_graph()
-    print("- - - - - - -")
+can.create_line(245, 10, 245, 150)
+can.create_line(245, 350, 245, 490)
+can.create_line(10, 245, 150, 245)
+can.create_line(350, 245, 490, 245)
 
 
+# ligneInter 1
+can.create_oval(5, 5, 15, 15, fill='black', tags="inter1")
+can.create_oval(240, 5, 250, 15, fill='black', tags="inter2")
+can.create_oval(485, 5, 495, 15, fill='black', tags="inter3")
+# ligneInter 2
+can.create_oval(75, 75, 85, 85, fill='black', tags="inter4")
+can.create_oval(240, 75, 250, 85, fill='black', tags="inter5")
+can.create_oval(415, 75, 425, 85, fill='black', tags="inter6")
+# ligneInter 3
+can.create_oval(145, 145, 155, 155, fill='black', tags="inter7")
+can.create_oval(240, 145, 250, 155, fill='black', tags="inter8")
+can.create_oval(345, 145, 355, 155, fill='black', tags="inter9")
+# ligneInter 4
+can.create_oval(5, 240, 15, 250, fill='black', tags="inter10")
+can.create_oval(75, 240, 85, 250, fill='black', tags="inter11")
+can.create_oval(145, 240, 155, 250, fill='black', tags="inter12")
+can.create_oval(345, 240, 355, 250, fill='black', tags="inter13")
+can.create_oval(415, 240, 425, 250, fill='black', tags="inter14")
+can.create_oval(485, 240, 495, 250, fill='black', tags="inter15")
+# ligneInter 5
+can.create_oval(145, 345, 155, 355, fill='black', tags="inter16")
+can.create_oval(240, 345, 250, 355, fill='black', tags="inter17")
+can.create_oval(345, 345, 355, 355, fill='black', tags="inter18")
+# ligneInter 6
+can.create_oval(75, 415, 85, 425, fill='black', tags="inter19")
+can.create_oval(240, 415, 250, 425, fill='black', tags="inter20")
+can.create_oval(415, 415, 425, 425, fill='black', tags="inter21")
+# ligneInter 7
+can.create_oval(5, 485, 15, 495, fill='black', tags="inter22")
+can.create_oval(240, 485, 250, 495, fill='black', tags="inter23")
+can.create_oval(485, 485, 495, 495, fill='black', tags="inter24")
+
+
+# A Modifier
+def rouge(event):
+    clic = event.x, event.y
+    item = can.find_closest(*clic)
+    if(len(canPion.find_withtag('pionRouge'))) > 0:  # pose
+        if can.type(item) == 'oval' and can.gettags(item)[0] != 'rouge' and can.gettags(item)[0] != 'bleu':
+            # récupération du tag de l'inter permettant de faire le lien avec le GE
+            inter = can.gettags(item)[0]
+            x1, y1, x2, y2 = can.coords(item[0])
+            x1 -= 4
+            y1 -= 4
+            x2 += 4
+            y2 += 4
+            can.create_oval(x1, y1, x2, y2, fill='red',
+                            outline='lightgrey', tags='rouge')
+            canPion.delete(canPion.find_withtag('pionRouge')[
+                len(canPion.find_withtag('pionRouge'))-1])
+        else:
+            print('wouaf')
+    elif can.type(item) == 'oval' and str(canPion.find_withtag('pionRouge')) == '()' and len(can.find_withtag('rouge'))-1 > 3:  # mouvement
+        print('miam')
+
+
+def bleu(event):
+    clic = event.x, event.y
+    item = can.find_closest(*clic)
+    if(len(canPion.find_withtag('pionBleu'))) > 0:  # pose
+        if can.type(item) == 'oval' and can.gettags(item)[0] != 'rouge' and can.gettags(item)[0] != 'bleu':
+            # récupération du tag de l'inter permettant de faire le lien avec le GE
+            inter = can.gettags(item)[0]
+            x1, y1, x2, y2 = can.coords(item[0])
+            x1 -= 4
+            y1 -= 4
+            x2 += 4
+            y2 += 4
+            can.create_oval(x1, y1, x2, y2, fill='blue',
+                            outline='lightgrey', tags='bleu')
+            canPion.delete(canPion.find_withtag('pionBleu')[
+                len(canPion.find_withtag('pionBleu'))-1])
+        else:
+            print('wouaf')
+    elif can.type(item) == 'oval' and str(canPion.find_withtag('pionBleu')) == '()' and len(can.find_withtag('bleu'))-1 > 3:  # mouvement
+        print('miam')
+
+
+texte = ' Chaque joueur dispose de 9 pions de sa couleur.  L\'objectif du jeu est de \n retirer les pions de l\'adversaire sur le damier ou de le bloquer afin qu\'il \n ne puisse plus jouer.'
+Label(sousframe2, text=texte, font='impact', background='white', relief=GROOVE).grid(
+    row=0, column=0, padx=10, pady=10, sticky=(W, E))
+
+texte = ' PHASE 1 - La pose : Tant qu\'il en possède encore, chaque joueur place\n à tour de rôle un pion sur une intersection libre. La phase 2 débute après\n que les joueurs ont placé tous leurs pions. \n\n PHASE 2 - Le mouvement : Lorsqu\'il n\'a plus de pion à poser, chaque joueur fait\n glisser l\'un de ses pions vers une intersection voisine libre en suivant un\n chemin prévu. La phase 3 débute dès que l\'un des joueurs est réduit à 3 pions. \n\n PHASE 3 - Le saut : Celui qui ne possède plus que trois pions peut alors se \n déplacer en sautant où il veut. Le jeu s\'achève quand un joueur n\'a plus que\n deux pions ou ne peut plus jouer, il est alors le perdant.'
+Label(sousframe2, text=texte, font='impact', background='white', relief=GROOVE).grid(
+    row=1, column=0, padx=10, pady=10, sticky=W)
+
+canPion = Canvas(sousframe2, width=506, heigh=70, bg='grey')
+canPion.grid(row=2, column=0, sticky=(W), padx=10, pady=10)
+
+# A rendre dynamique avec le GE
+nbPion = 9
+x1 = 10
+y1 = 10
+x2 = 30
+y2 = 30
+for i in range(nbPion):
+    canPion.create_oval(x1, y1, x2, y2, fill='red',
+                        outline='lightgrey', tags=('pionRouge'))
+
+    x1 += 30
+    x2 += 30
+x1 = 10
+y1 = 40
+x2 = 30
+y2 = 60
+for i in range(nbPion):
+    canPion.create_oval(x1, y1, x2, y2, fill='blue',
+                        outline='lightgray', tags=('pionBleu'))
+    x1 += 30
+    x2 += 30
+
+can.bind("<Button-1>", rouge)
+can.bind("<Button-3>", bleu)
+
+root.mainloop()
