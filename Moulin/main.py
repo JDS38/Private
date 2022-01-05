@@ -42,12 +42,22 @@ class Joueur:
                 return True
         return False
 
+    def deplacement(self, depart, pion, destination):
+        pion.X = destination.X
+        pion.Y = destination.Y
+        destination.pion = pion
+        destination.Occupee = True
+        depart.pion = None
+        depart.Occupee = False
+
+
+
 
 class Pion:
 
     def __init__(self, x, y, couleur):
-        self.posX = x
-        self.posY = y
+        self.X = x
+        self.Y = y
         self.couleur = couleur
         self.InMoulin = False
 
@@ -58,6 +68,7 @@ class Intersection:
         self.X = x
         self.Y = y
         self.Occupee = False
+        self.pion = None
         self.Voisins = {'inter1': ('inter2', 'inter10'),
                         'inter2': ('inter1', 'inter3', 'inter5'),
                         'inter3': ('inter2', 'inter15'),
@@ -134,31 +145,83 @@ def phase_jeu(status):
         case 2:
             print()
             print("Phase de Pose Joueur vs Joueur")
-
+            print("Pion à poser par le joueur 1 : ", joueur1.pionRestants)
+            print("Pion à poser par le joueur 2 : ", joueur2.pionRestants)
             while joueur2.pionRestants > 0:
+
                 ok = False
-                while ok  == False:
+                while ok == False:
                     coo = input("\n Joueur 1 Entrez les coordonnées de pose sous la forme x,y: ")
                     if int(coo[0]) and int(coo[2]):
-                        if(joueur1.pose(int(coo[0]), int(coo[2])) == True):
+                        if (joueur1.pose(int(coo[0]), int(coo[2])) == True):
                             ok = True
                         else:
                             print("Intersection ocupée")
                     else:
                         print("coordonnees invalides")
                 print(joueur1.pionRestants)
-            # Moulin?
-
+                ok = False
+                while ok == False:
+                    coo = input("\n Joueur 2 Entrez les coordonnées de pose sous la forme x,y: ")
+                    if int(coo[0]) and int(coo[2]):
+                        if (joueur2.pose(int(coo[0]), int(coo[2])) == True):
+                            ok = True
+                        else:
+                            print("Intersection ocupée")
+                    else:
+                        print("coordonnees invalides")
+                print(joueur2.pionRestants)
             phase_jeu(3)
 
         case 3:
-            print()
-            print("Phase de Mouvement Joueur vs Joueur")
+            voisinDipo = []
+            selectedPion = None
+            depart = None
+            coopion = ""
+            print("\nPhase de Mouvement Joueur vs Joueur")
+            print("Joueur 1 sélectionnez un pion parmi:")
+            for pion in joueur1.listePionsEnJeu:
+                print(pion.X, pion.Y)
+            cooValide = False
+            while cooValide == False:
+                coopion = input("Entrez les coordonées du pion sous la forme X,Y")
+                if int(coopion[0]) and int(coopion[2]):
+                    for pion in joueur1.listePionsEnJeu:
+                        if pion.X == int(coopion[0]) and pion.Y == int(coopion[2]):
+                            cooValide == True
+                            selectedPion = pion
+                            break
+                else:
+                    print("Entrez des coordonnées valides")
 
-            # while RestePion1 > 2 or Restepion2 > 2 :
-            # Mouvement
+                if cooValide == False:
+                    print("Vous n'avez aucun pion sur ces coordonnées")
 
-            # Moulin?
+            for inter in inters:
+                if selectedPion.X == inter.X and selectedPion.Y == inter.Y:
+                    depart = inter
+                if inter.X == int(coopion[0]) and inter.y == int(coopion[2]):
+                    voisins = inter.Voisins[inter.Nom]
+
+                    print("Intersections voisines disponibles: ")
+                    for intersec in inters:
+                        for voisin in voisins:
+                            if intersec.Nom == voisin:
+                                if intersec.Occupee == False:
+                                    print(intersec.X, intersec.Y)
+                                    voisinDipo.append(intersec)
+
+            destValide = False
+            while destValide == False:
+                destCoo = input("Entrez la destination sous la forme X,Y")
+                if int(destCoo[0]) and int(destCoo[2]):
+                    for v in voisinDipo:
+                        if v.X == destCoo[0] and v.Y == destCoo:
+                            joueur1.deplacement(depart, selectedPion, v)
+                            destValide = True
+                else:
+                    print("coordonnees invalides")
+
 
             phase_jeu(4)
 
@@ -171,7 +234,6 @@ def phase_jeu(status):
 
             # if Restepion2 == 2:
             # print("Joueur 1 Win)
-
 
 
         # avec l'IA
