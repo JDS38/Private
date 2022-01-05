@@ -5,7 +5,7 @@ Usage:
 
 """
 
-__authors__ = ("Jean-Daniel SPADAZZI & Tedy  ")
+__authors__ = "Jean-Daniel SPADAZZI & Tedi KPOGNON & GAY Guillaume "
 __date__ = "2021/11/17"
 __version__ = "1.1"
 
@@ -13,87 +13,149 @@ __version__ = "1.1"
 
 from tkinter import *
 
+import Joueur
+import Intersection
 
-# This is a sample Python script.
+# Variable globale
 
-# Press Maj+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+# global Nbrpion1, Nbrpion2, Restepion1, Restepion2, grille, grillepast
 
-def fenetre_graph():
-    # Creation d'une fenêtre avec la classe Tk :
+'''class Intersection:
+    def __init__(self,nom,x,y):
+        self.nom = nom
+        self.x = x
+        self.y = y
+        self.vide = True'''
 
-    fenetre = Tk()
-    # Ajout d'un titre à la fenêtre principale :
-    fenetre.title("Moulin")
-    # Définir les dimensions par défaut la fenêtre principale :
-    fenetre.geometry("600x600")
-    # Limiter les dimensions d’affichage de la fenêtre principale :
-    fenetre.maxsize(900, 900)
-    fenetre.minsize(500, 500)
-    fenetre.config(bg="#ffe680")
-
-    # Canvas
-    canvas = Canvas(fenetre)
-    canvas.pack()
-    canvas.config(width=450, height=450)
-
-    n = 7
-    for i in range(n):
-        for j in range(n):
-            # cadre exterieure
-            line = canvas.create_line(50, 50, 50, 400, fill='black', width=5)
-            line = canvas.create_line(400, 50, 400, 400, fill='black', width=5)
-            line = canvas.create_line(50, 50, 400, 50, fill='black', width=5)
-            line = canvas.create_line(50, 400, 400, 400, fill='black', width=5)
-            # cadre intermediaire
-
-            line = canvas.create_line(100, 100, 100, 350, fill='black', width=5)
-            line = canvas.create_line(350, 100, 350, 350, fill='black', width=5)
-            line = canvas.create_line(100, 100, 350, 100, fill='black', width=5)
-            line = canvas.create_line(100, 350, 350, 350, fill='black', width=5)
-
-            # cadre interieure
-
-            line = canvas.create_line(150, 150, 150, 300, fill='black', width=5)
-            line = canvas.create_line(300, 150, 300, 300, fill='black', width=5)
-            line = canvas.create_line(150, 150, 300, 150, fill='black', width=5)
-            line = canvas.create_line(150, 300, 300, 300, fill='black', width=5)
-
-            # ligne croisé
-
-            line = canvas.create_line(225, 50, 225, 150, fill='black', width=5)
-            line = canvas.create_line(225, 300, 225, 400, fill='black', width=5)
-            line = canvas.create_line(50, 225, 150, 225, fill='black', width=5)
-            line = canvas.create_line(300, 225, 400, 225, fill='black', width=5)
-
-            fenetre.mainloop()
+'''class Joueur:
+    def __init__(self):
+        self.Nbrpion = 9 #Définition attribut nombre de pion à poser
+        self.Restepion = 9 #Définition attribut nombre de pion restant'''
 
 
-def create_grille():
-    n = 7
-    a = [[0] * n for i in range(n)]
-    for i in range(n):
-        for j in range(n):
 
-            # cadre exterieure
-            if (i == 0 or i == 3 or i == 6) and (j == 0 or j == 3 or j == 6):
-                a[i][j] = '1'
-            # cadre intermediaire
-            if (i == 1 or i == 3 or i == 5) and (j == 1 or j == 3 or j == 5):
-                a[i][j] = '1'
-            # cadre interieure
-            if (i == 2 or i == 3 or i == 4) and (j == 2 or j == 3 or j == 4):
-                a[i][j] = '1'
-            # supprimer le centre
-            if i == 3 and j == 3:
-                a[i][j] = '0'
-    for row in a:
-        print(' '.join([str(elem) for elem in row]))
 
+
+def phase_jeu(status):
+    match status:
+
+        case 1:
+            init_game()
+
+        # humain vs humain
+        case 2:
+            print()
+            print("Phase de Pose Joueur vs Joueur")
+
+            # while Nbrpion2 > 0 :
+            # Pose
+
+            # Moulin?
+
+            phase_jeu(3)
+
+        case 3:
+            print()
+            print("Phase de Mouvement Joueur vs Joueur")
+
+            # while RestePion1 > 2 or Restepion2 > 2 :
+            # Mouvement
+
+            # Moulin?
+
+            phase_jeu(4)
+
+        case 4:
+            print()
+            print("Fin de partie")
+
+            # if Restepion1 == 2:
+            # print("Joueur 2 Win)
+
+            # if Restepion2 == 2:
+            # print("Joueur 1 Win)
+
+
+
+        # avec l'IA
+        case 20:
+            print()
+            print("Phase de Pose Joueur vs Ordinateur")
+
+            # while Nbrpion2 > 0 :
+            # Pose avec l'ia
+
+            # Moulin?
+
+            phase_jeu(30)
+
+        case 30:
+            print()
+            print("Phase de Mouvement Joueur vs Ordinateur")
+
+            # while RestePion1 > 2 or Restepion2 > 2 :
+            # Mouvement avec l'ia
+
+            # Moulin?
+
+            phase_jeu(4)
+
+
+def init_game():
+
+    inters = []
+    inters.append(Intersection("inter1", 1, 1))
+    inters.append(Intersection("inter2", 4, 1))
+    inters.append(Intersection("inter3", 7, 1))
+    inters.append(Intersection("inter4", 2, 2))
+    inters.append(Intersection("inter5", 4, 2))
+    inters.append(Intersection("inter6", 6, 2))
+    inters.append(Intersection("inter7", 3, 3))
+    inters.append(Intersection("inter8", 4, 3))
+    inters.append(Intersection("inter9", 5, 3))
+    inters.append(Intersection("inter10", 1, 4))
+    inters.append(Intersection("inter11", 2, 4))
+    inters.append(Intersection("inter12", 3, 4))
+    inters.append(Intersection("inter13", 5, 4))
+    inters.append(Intersection("inter14", 6, 4))
+    inters.append(Intersection("inter15", 7, 4))
+    inters.append(Intersection("inter16", 3, 5))
+    inters.append(Intersection("inter17", 5, 5))
+    inters.append(Intersection("inter18", 5, 5))
+    inters.append(Intersection("inter19", 2, 6))
+    inters.append(Intersection("inter20", 4, 6))
+    inters.append(Intersection("inter21", 6, 6))
+    inters.append(Intersection("inter22", 1, 7))
+    inters.append(Intersection("inter23", 4, 7))
+    inters.append(Intersection("inter24", 7, 7))
+
+    print("Choix du mode de jeu :")
+    print("1. Humain vs Humain")
+    print("2. Humain vs Ordinateur")
+    mode = int(input("Indiquez votre choix : "))
+    if mode == 1:
+        phase_jeu(2)  # phase de pose j vs j
+
+    if mode == 2:
+        phase_jeu(20)  # phase de pose j vs ordinateur
+    if mode != 1 and mode != 2:
+        print("Choix impossible, entrez un choix possible")
+        init_game()
+
+#------------------------------------------------------------
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
+
+    joueur1 = Joueur("noir", 9)
+    joueur2 = Joueur("blanc", 9)
+
     print()
-    create_grille()
-    print("- - - - - - -")
-    fenetre_graph()
+    phase_jeu(1)
+
+'''    # Définition des deux joueurs
+    un = Joueur()
+    deux = Joueur()
+
+    print("J1 : Nombre de pion à poser =", un.Nbrpion, "Nombre de pion restant =", deux.Restepion)
+    print("J2 : Nombre de pion à poser =", un.Nbrpion, "Nombre de pion restant =", deux.Restepion)'''

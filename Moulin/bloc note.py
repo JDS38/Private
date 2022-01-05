@@ -1,33 +1,3 @@
-# L'importation de l’ensemble des éléments du paquet tkinter :
-
-from tkinter import *
-
-
-# This is a sample Python script.
-
-# Press Maj+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-def create_grille():
-    n = 7
-    a = [[0] * n for i in range(n)]
-    for i in range(n):
-        for j in range(n):
-
-            # cadre exterieure
-            if (i == 0 or i == 3 or i == 6) and (j == 0 or j == 3 or j == 6):
-                a[i][j] = '1'
-            # cadre intermediaire
-            if (i == 1 or i == 3 or i == 5) and (j == 1 or j == 3 or j == 5):
-                a[i][j] = '1'
-            # cadre interieure
-            if (i == 2 or i == 3 or i == 4) and (j == 2 or j == 3 or j == 4):
-                a[i][j] = '1'
-            # supprimer le centre
-            if i == 3 and j == 3:
-                a[i][j] = '0'
-    for row in a:
-        print(' '.join([str(elem) for elem in row]))
-
 def fenetre_graph():
     # Creation d'une fenêtre avec la classe Tk :
 
@@ -75,13 +45,43 @@ def fenetre_graph():
             line = canvas.create_line(50, 225, 150, 225, fill='black', width=5)
             line = canvas.create_line(300, 225, 400, 225, fill='black', width=5)
 
-    fenetre.mainloop()
+            fenetre.mainloop()
+
+
+def phase_pose(tableau_jeu):
+    for row in tableau_jeu:
+        print(' '.join([str(elem) for elem in row]))
+
+
+global Nbrpion1, Nbrpion2, Restepion1, Restepion2, grille, grillepast
+
+def init_game():
+    n = 8
+    global Nbrpion1, Nbrpion2, Restepion1, Restepion2, grille
+    grille = [[0] * n for i in range(n)]
+    for i in range(n):
+        for j in range(n):
+
+            # cadre extérieure
+            if (i == 1 or i == 4 or i == 7) and (j == 1 or j == 4 or j == 7):
+                grille[i][j] = '9'
+            # cadre intermédiaire
+            if (i == 2 or i == 4 or i == 6) and (j == 2 or j == 4 or j == 6):
+                grille[i][j] = '9'
+            # cadre intérieure
+            if (i == 3 or i == 4 or i == 5) and (j == 3 or j == 4 or j == 5):
+                grille[i][j] = '9'
+            # supprimer le centre
+            if i == 4 and j == 4:
+                grille[i][j] = '0'
+    for row in grille:
+        print(' '.join([str(elem) for elem in row]))
+
+    Nbrpion1 = 9  # diminue à chaque pose pour Joueur 1
+    Nbrpion2 = 9  # diminue à chaque pose  Joueur 2
+    Restepion1 = 9  # diminue à chaque capture  Joueur 1
+    Restepion2 = 9  # diminue à chaque capture  Joueur 2
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print()
-    create_grille()
-    fenetre_graph()
-    print("- - - - - - -")
-
-
+    init_game()
