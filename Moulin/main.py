@@ -1,4 +1,4 @@
-import
+import Interface_Graphique
 
 inters = []
 moulins = []
