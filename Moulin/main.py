@@ -203,6 +203,79 @@ def init_game():
         print("Choix impossible, entrez un choix possible")
         init_game()
 
+def Get_Info_Deplacement(joueurEnCours):
+    voisinDipo = []
+    selectedPion = None
+    depart = None
+
+    while len(voisinDipo) == 0:
+        print(f"{joueurEnCours.nom} sélectionnez un pion parmi:")
+        affiche_pion_mvt_possible(joueurEnCours)
+        cooValide = False
+        while cooValide == False:
+            coopion = input("Entrez les coordonées du pion sous la forme X,Y")
+            if len(coopion) >= 3:
+                if coopion[0].isnumeric() and coopion[2].isnumeric():
+                    for pion in joueurEnCours.listePionsEnJeu:
+                        if pion.X == int(coopion[0]) and pion.Y == int(coopion[2]):
+                            cooValide = True
+                            selectedPion = pion
+                            break
+                    if cooValide == False:
+                        print("Vous n'avez aucun pion sur ces coordonnées")
+                else:
+                    print("Coordonées invalides")
+            else:
+                print("Coordonées invalides")
+
+        for inter in inters:
+            if selectedPion.X == inter.X and selectedPion.Y == inter.Y:
+                depart = inter
+                voisins = inter.Voisins[inter.Nom]
+
+                print("Intersections voisines disponibles: ")
+                for intersec in inters:
+                    for voisin in voisins:
+                        if intersec.Nom == voisin:
+                            if intersec.Occupee == False:
+                                print(intersec.X, intersec.Y)
+                                voisinDipo.append(intersec)
+        if len(voisinDipo) == 0:
+            print("ce pion n'a pas de mouvement possible sélectionnez un autre pion")
+
+    destValide = False
+    while destValide == False:
+        destCoo = input("Entrez la destination sous la forme X,Y")
+        if len(destCoo) >=3:
+            if destCoo[0].isnumeric() and destCoo[2].isnumeric():
+                for v in voisinDipo:
+                    if v.X == int(destCoo[0]) and v.Y == int(destCoo[2]):
+                        print(f"pion({selectedPion.X}, {selectedPion.Y}) déplacé en ({v.X}, {v.Y})")
+                        joueurEnCours.deplacement(depart, selectedPion, v)
+                        destValide = True
+            else:
+                print("coordonnees invalides")
+        else:
+            print("coordonnees invalides")
+
+def affiche_pion_mvt_possible(joueurEnCours):
+    for pion in joueurEnCours.listePionsEnJeu:
+        for intersec in inters:
+            if pion.X == intersec.X and pion.Y == intersec.Y:
+                voisins = intersec.Voisins[intersec.Nom]
+                for voisin in voisins:
+                    found = False
+                    for inter in inters:
+                        if inter.Nom == voisin:
+                            if inter.Occupee == False:
+                                print(intersec.X, intersec.Y)
+                                found = True
+                        if found == True:
+                            break
+                    if found == True:
+                        break
+
+
 def phase_jeu(status):
     match status:
 
@@ -251,58 +324,11 @@ def phase_jeu(status):
 
             #while len(joueur1.listePionsEnJeu)>2 or len(joueur2.listePionsEnJeu)>2 :
 
-            voisinDipo = []
-            selectedPion = None
-            depart = None
-            coopion = ""
+
             print("\nPhase de Mouvement Joueur vs Joueur")
-
-            while len(voisinDipo) == 0:
-                print("Joueur 1 sélectionnez un pion parmi:")
-                for pion in joueur1.listePionsEnJeu:
-                    print(pion.X, pion.Y)
-                cooValide = False
-                while cooValide == False:
-                    coopion = input("Entrez les coordonées du pion sous la forme X,Y")
-                    if coopion[0].isnumeric() and coopion[2].isnumeric():
-                        for pion in joueur1.listePionsEnJeu:
-                            if pion.X == int(coopion[0]) and pion.Y == int(coopion[2]):
-                                cooValide = True
-                                selectedPion = pion
-                                break
-                    else:
-                        print("Entrez des coordonnées valides")
-
-                    if cooValide == False:
-                        print("Vous n'avez aucun pion sur ces coordonnées")
-
-                for inter in inters:
-                    if selectedPion.X == inter.X and selectedPion.Y == inter.Y:
-                        depart = inter
-                    if inter.X == int(coopion[0]) and inter.Y == int(coopion[2]):
-                        voisins = inter.Voisins[inter.Nom]
-
-                        print("Intersections voisines disponibles: ")
-                        for intersec in inters:
-                            for voisin in voisins:
-                                if intersec.Nom == voisin:
-                                    if intersec.Occupee == False:
-                                        print(intersec.X, intersec.Y)
-                                        voisinDipo.append(intersec)
-                if len(voisinDipo) == 0:
-                    print("ce pion n'a pas de mouvement possible sélectionnez un autre pion")
-
-            destValide = False
-            while destValide == False:
-                destCoo = input("Entrez la destination sous la forme X,Y")
-                if destCoo[0].isnumeric() and destCoo[2].isnumeric():
-                    for v in voisinDipo:
-                        if v.X == int(destCoo[0]) and v.Y == int(destCoo[2]):
-                            print(f"pion({selectedPion.X}, {selectedPion.Y}) déplacé en ({v.X}, {v.Y})")
-                            joueur1.deplacement(depart, selectedPion, v)
-                            destValide = True
-                else:
-                    print("coordonnees invalides")
+            while len(joueur1.listePionsEnJeu) > 3 and len(joueur2.listePionsEnJeu) > 3:
+                Get_Info_Deplacement(joueur1)
+                Get_Info_Deplacement(joueur2)
 
             phase_jeu(4)
 
@@ -340,9 +366,6 @@ def phase_jeu(status):
             # Moulin?
 
             phase_jeu(4)
-
-
-
 
 if __name__ == '__main__':
 
