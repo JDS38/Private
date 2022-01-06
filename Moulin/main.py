@@ -155,9 +155,9 @@ def VerifMoulin(joueurencours):
 
 def Capture(joueuradverse):
 
-    capturé = False
+    capturee = False
 
-    while capturé == False :
+    while capturee == False :
         capture = input("\n Faite votre choix parmi les moulins précédement cité : Entrez les coordonnées du pion à capturer x,y: ")
         if len(capture) < 3:
             print("Choix impossible, entrez un choix possible")
@@ -168,7 +168,7 @@ def Capture(joueuradverse):
                         if inter.X == pion.X and inter.Y == pion.Y:
                             inter.Occupee = False
                     joueuradverse.listePionsEnJeu.remove(pion)
-                    capturé = True
+                    capturee = True
                     print("Pion supprimé")
                     print("Pion hors moulin restant à ",joueuradverse.nom,":")
                     for pion in joueuradverse.listePionsEnJeu:
@@ -185,16 +185,16 @@ def Capture(joueuradverse):
 
 def CaptureInMoulin(joueuradverse):
 
-    capturé = False
+    capturee = False
 
-    while capturé == False :
+    while capturee == False :
         capture = input("\n Faite votre choix parmi les moulins précédement cité : Entrez les coordonnées du pion à capturer x,y: ")
         if len(capture) >= 3:
             if capture[0].isnumeric() and capture[2].isnumeric():
                 for pion in joueuradverse.listePionsEnJeu :
                     if int(capture[0])==pion.X and int(capture[2])==pion.Y and pion.InMoulin == True :
                         joueuradverse.listePionsEnJeu.remove(pion)
-                        capturé = True
+                        capturee = True
                         print("Pion supprimé")
                         print("Pion hors moulin restant à ",joueuradverse,":")
                         for pion in joueuradverse.listePionsEnJeu:
