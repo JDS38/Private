@@ -52,6 +52,7 @@ class Joueur:
         depart.pion = None
         depart.Occupee = False
 
+
 class Pion:
 
     def __init__(self, x, y, nom):
@@ -109,37 +110,123 @@ def VerifMoulin(joueurencours):
                 #print("if2")
                 if moulin.Inter3.Occupee == True and moulin.Inter3.pion.color == joueurencours.nom:
                     if moulin.Inter1.pion.InMoulin == False or moulin.Inter2.pion.InMoulin == False or moulin.Inter3.pion.InMoulin == False :
-                        print("Moulin réalisé par ", joueurencours.nom, "capturez un pion adverse",moulin.Inter1.X,moulin.Inter1.Y,",",moulin.Inter2.X,moulin.Inter2.Y,",",moulin.Inter3.X,moulin.Inter3.Y)
+                        print("Moulin réalisé par ", joueurencours.nom, "capturez un pion adverse. Moulin réalisé :",moulin.Inter1.X,moulin.Inter1.Y,",",moulin.Inter2.X,moulin.Inter2.Y,",",moulin.Inter3.X,moulin.Inter3.Y)
                         moulin.Inter1.pion.InMoulin = True
                         moulin.Inter2.pion.InMoulin = True
                         moulin.Inter3.pion.InMoulin = True
                         if joueurencours.nom =="Joueur 1":
+                            PionLibreJ2=0
                             for pion in joueur2.listePionsEnJeu:
                                 if pion.InMoulin == False:
                                     print(pion.X, pion.Y)
-                            Capture(joueur2)
+                                    PionLibreJ2 +=1
+                            PionMoulinJ2 = 0
+                            for pion in joueur2.listePionsEnJeu:
+                                if pion.InMoulin == True:
+                                    print(pion.X, pion.Y)
+                                    PionMoulinJ2 += 1
+                            print("Il y a donc : ",PionLibreJ2, "pions hors d'un moulin")
+                            if PionLibreJ2 != 0:
+                                Capture(joueur2)
+                            else:
+
+                                print("Il y a donc : ", PionMoulinJ2, "pions dans un moulin")
+                                CaptureInMoulin(joueur2)
+
                         if joueurencours.nom == "Joueur 2":
+                            PionLibreJ1=0
                             for pion in joueur1.listePionsEnJeu:
                                 if pion.InMoulin == False:
                                     print(pion.X, pion.Y)
-                            Capture(joueur1)
+                                    PionLibreJ1 +=1
+                            PionMoulinJ1 = 0
+                            for pion in joueur1.listePionsEnJeu:
+                                if pion.InMoulin == True:
+                                    print(pion.X, pion.Y)
+                                    PionMoulinJ1 += 1
+                            print("Il y a donc : ",PionLibreJ1, "pions hors d'un moulin")
+                            if PionLibreJ1 !=0:
+                                Capture(joueur1)
+                            else:
+
+                                print("Il y a donc : ", PionMoulinJ1, "pions dans un moulin")
+                                CaptureInMoulin(joueur1)
+
 
 def Capture(joueuradverse):
 
     capturé = False
 
     while capturé == False :
-        capture = input("\n Bravo vous avez fait un moulin : Entrez les coordonnées du pion à capturer x,y: ")
-        if int(capture[0]) and int(capture[2]):
+        capture = input("\n Faite votre choix parmi les moulins précédement cité : Entrez les coordonnées du pion à capturer x,y: ")
+        if len(capture) < 3:
+            print("Choix impossible, entrez un choix possible")
+        elif capture[0].isnumeric() and capture[2].isnumeric():
             for pion in joueuradverse.listePionsEnJeu :
                 if int(capture[0])==pion.X and int(capture[2])==pion.Y and pion.InMoulin == False :
+                    for inter in inters:
+                        if inter.X == pion.X and inter.Y == pion.Y:
+                            inter.Occupee = False
                     joueuradverse.listePionsEnJeu.remove(pion)
                     capturé = True
                     print("Pion supprimé")
+                    print("Pion hors moulin restant à ",joueuradverse.nom,":")
                     for pion in joueuradverse.listePionsEnJeu:
-                        print(pion.X, pion.Y)
-                #else:
-                    #print("Pas de pion ou c'est votre pion")
+                        if pion.InMoulin == False:
+                            print(pion.X, pion.Y)
+                    print("Pion dans moulin restant à ", joueuradverse.nom, ":")
+                    for pion in joueuradverse.listePionsEnJeu:
+                        if pion.InMoulin == True :
+                            print(pion.X, pion.Y)
+                else:
+                    print("Intersection inexistante")
+        else:
+            print("Intersection inexistante ou incorrecte")
+
+def CaptureInMoulin(joueuradverse):
+
+    capturé = False
+
+    while capturé == False :
+        capture = input("\n Faite votre choix parmi les moulins précédement cité : Entrez les coordonnées du pion à capturer x,y: ")
+        if len(capture) >= 3:
+            if capture[0].isnumeric() and capture[2].isnumeric():
+                for pion in joueuradverse.listePionsEnJeu :
+                    if int(capture[0])==pion.X and int(capture[2])==pion.Y and pion.InMoulin == True :
+                        joueuradverse.listePionsEnJeu.remove(pion)
+                        capturé = True
+                        print("Pion supprimé")
+                        print("Pion hors moulin restant à ",joueuradverse,":")
+                        for pion in joueuradverse.listePionsEnJeu:
+                            if pion.InMoulin == False:
+                                print(pion.X, pion.Y)
+                        print("Pion dans moulin restant à ", joueuradverse, ":")
+                        for pion in joueuradverse.listePionsEnJeu:
+                            if pion.InMoulin == True :
+                                print(pion.X, pion.Y)
+                    else:
+                        print("Pas de pion dans cette intersection ou intersection inexistante")
+            else:
+                print("Intersection incorrecte")
+        else:
+            print("Intersection incorrecte")
+
+def PhasePose(joueuractuel):
+    ok = False
+    while ok == False:
+        coo = input(f"{joueuractuel.nom} Entrez les coordonnées de pose sous la forme x,y: ")
+        if len(coo) < 3:
+            print("Choix impossible, entrez un choix possible")
+        elif coo[0].isnumeric() and coo[2].isnumeric():
+            if (joueuractuel.pose(int(coo[0]), int(coo[2])) == True):
+                ok = True
+            else:
+                print("Intersection ocupée ou inexistante")
+        else:
+            print("coordonnees invalides")
+    print(joueuractuel.pionRestants)
+    VerifMoulin(joueuractuel)
+
 
 
 def init_game():
@@ -290,30 +377,8 @@ def phase_jeu(status):
             print("Pion à poser par le joueur 2 : ",joueur2.pionRestants)
             while joueur2.pionRestants > 0:
 
-                ok = False
-                while ok  == False:
-                    coo = input("\n Joueur 1 Entrez les coordonnées de pose sous la forme x,y: ")
-                    if coo[0].isnumeric() and coo[2].isnumeric():
-                        if(joueur1.pose(int(coo[0]), int(coo[2])) == True):
-                            ok = True
-                        else:
-                            print("Intersection ocupée")
-                    else:
-                        print("coordonnees invalides")
-                print(joueur1.pionRestants)
-                #VerifMoulin(joueur1)
-                ok = False
-                while ok == False:
-                    coo = input("\n Joueur 2 Entrez les coordonnées de pose sous la forme x,y: ")
-                    if coo[0].isnumeric() and coo[2].isnumeric():
-                        if (joueur2.pose(int(coo[0]), int(coo[2])) == True):
-                            ok = True
-                        else:
-                            print("Intersection ocupée")
-                    else:
-                        print("coordonnees invalides")
-                print(joueur2.pionRestants)
-                #VerifMoulin(joueur2)
+                PhasePose(joueur1)
+                PhasePose(joueur2)
 
 
             phase_jeu(3)
@@ -366,6 +431,9 @@ def phase_jeu(status):
             # Moulin?
 
             phase_jeu(4)
+
+
+
 
 if __name__ == '__main__':
 
