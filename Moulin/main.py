@@ -1,6 +1,7 @@
 inters = []
 moulins = []
 
+
 class Damier:
 
     def __init__(self):
@@ -43,6 +44,7 @@ class Joueur:
                 self.pionRestants -= 1
                 return True
         return False
+
 
     def deplacement(self, depart, pion, destination):
         pion.X = destination.X

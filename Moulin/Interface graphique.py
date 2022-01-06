@@ -11,6 +11,9 @@ def popup():
     fenetreA.grab_set()		  # Interaction avec fenetre FenêtreP impossible
     FenêtreP.wait_window(fenetreA)   # Arrêt script principal
 
+def choixBR():  # Fonction associée au boutons radio choix du mode de jeu
+    print('Mode de jeux choisie dans l interface graphique :', str(svRadio.get()))
+
 
 FenêtreP = Tk()
 FenêtreP.title("Jeu du Moulin®")
@@ -21,6 +24,11 @@ fenetreA = Toplevel()	# Fenêtre auxiliaire -> Toplevel()
 fenetreA.title('Fenêtre auxiliaire')
 fenetreA.geometry('300x530+100+100')
 fenetreA.config(bg='lightgray')
+
+svRadio = StringVar()  # Variable de type str associée à l'état du bouton
+svRadio.set('1')  # Choix de la valeur par défaut (à l'ouverture de la fenêtre)
+Radiobutton(fenetreA, text='Joueur vs Joueur', variable=svRadio, value='1', command=choixBR).pack(padx=10, pady=2, anchor=W)
+Radiobutton(fenetreA, text='Joueur vs IA', variable=svRadio, value='2', command=choixBR).pack(padx=10, pady=2, anchor=W)
 
 mainframe = Frame(FenêtreP)
 mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
