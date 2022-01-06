@@ -13,24 +13,26 @@ class Damier:
                      [0, 0, 1, 0, 1, 0, 1, 0],
                      [0, 1, 0, 0, 1, 0, 0, 1]]
 
-    def str(self):
+    def __str__(self):
         res = ""
         for i in range(len(self.area)):
-            for j in range(len(self.area[i])):
-                res += str(self.area[i][j]) + " "
-            res += "\n"
+            if i > 0:
+                for j in range(len(self.area[i])):
+                    if j > 0:
+                        res += str(self.area[i][j]) + " "
+                res += "\n"
         return res
 
 
 grille = Damier()
 
-
 class Joueur:
 
-    def __init__(self, nom, pionsRestants):
+    def __init__(self, nom, pionsRestants, reprPion):
         self.nom = nom
         self.pionRestants = pionsRestants
         self.listePionsEnJeu = []
+        self.ReprPion = reprPion
 
     def pose(self, x, y):
         for inter in inters:
@@ -38,7 +40,7 @@ class Joueur:
                 pion = Pion(x, y, self.nom)
                 inter.Occupee=True
                 inter.pion = pion
-                grille.area[x][y] = pion
+                grille.area[x][y] = self.ReprPion
                 self.listePionsEnJeu.append(pion)
                 self.pionRestants -= 1
                 return True
@@ -47,6 +49,8 @@ class Joueur:
     def deplacement(self, depart, pion, destination):
         pion.X = destination.X
         pion.Y = destination.Y
+        grille.area[depart.X][depart.Y] = 1
+        grille.area[destination.X][destination.Y] = self.ReprPion
         destination.pion = pion
         destination.Occupee = True
         depart.pion = None
@@ -103,11 +107,8 @@ class Moulin:
 def VerifMoulin(joueurencours):
     for moulin in moulins :
         # les 4 centres de moulins possibles à l'extérieure
-        #print("for")
         if moulin.Inter1.Occupee == True and moulin.Inter1.pion.color == joueurencours.nom:
-            #print("if1")
             if moulin.Inter2.Occupee == True and moulin.Inter2.pion.color == joueurencours.nom:
-                #print("if2")
                 if moulin.Inter3.Occupee == True and moulin.Inter3.pion.color == joueurencours.nom:
                     if moulin.Inter1.pion.InMoulin == False or moulin.Inter2.pion.InMoulin == False or moulin.Inter3.pion.InMoulin == False :
                         print("Moulin réalisé par ", joueurencours.nom, "capturez un pion adverse. Moulin réalisé :",moulin.Inter1.X,moulin.Inter1.Y,",",moulin.Inter2.X,moulin.Inter2.Y,",",moulin.Inter3.X,moulin.Inter3.Y)
@@ -167,6 +168,7 @@ def Capture(joueuradverse):
                     for inter in inters:
                         if inter.X == pion.X and inter.Y == pion.Y:
                             inter.Occupee = False
+                            grille.area[inter.X][inter.Y] = 1
                     joueuradverse.listePionsEnJeu.remove(pion)
                     capturee = True
                     print("Pion supprimé")
@@ -213,8 +215,18 @@ def CaptureInMoulin(joueuradverse):
 
 def PhasePose(joueuractuel):
     ok = False
+    print("intersections disponibles:")
+    count = 0
+    for inter in inters:
+        if inter.Occupee == False:
+            if count < 5:
+                print(inter.X, inter.Y, end="    ")
+                count += 1
+            else:
+                print(inter.X, inter.Y)
+                count = 0
     while ok == False:
-        coo = input(f"{joueuractuel.nom} Entrez les coordonnées de pose sous la forme x,y: ")
+        coo = input(f"\n{joueuractuel.nom} Entrez les coordonnées de pose sous la forme x,y: ")
         if len(coo) < 3:
             print("Choix impossible, entrez un choix possible")
         elif coo[0].isnumeric() and coo[2].isnumeric():
@@ -224,9 +236,8 @@ def PhasePose(joueuractuel):
                 print("Intersection ocupée ou inexistante")
         else:
             print("coordonnees invalides")
-    print(joueuractuel.pionRestants)
+    print(f"\npions restant à poser pour le {joueuractuel.nom}: {joueuractuel.pionRestants}\n")
     VerifMoulin(joueuractuel)
-
 
 
 def init_game():
@@ -369,17 +380,19 @@ def phase_jeu(status):
         case 1:
             init_game()
 
+
         # humain vs humain
         case 2:
-            print()
-            print("Phase de Pose Joueur vs Joueur")
+            print(grille)
+            print(f"Dans la grille de jeu:\nles pions du joueur 1 son représentés par {joueur1.ReprPion}\nles pions du joueur 2 sont représentés par {joueur2.ReprPion}\net les intersections sont représentées par des 1")
+            print("\nPhase de Pose Joueur vs Joueur")
             print("Pion à poser par le joueur 1 : ",joueur1.pionRestants)
-            print("Pion à poser par le joueur 2 : ",joueur2.pionRestants)
+            print("Pion à poser par le joueur 2 : ",joueur2.pionRestants, "\n")
             while joueur2.pionRestants > 0:
-
                 PhasePose(joueur1)
+                print(grille)
                 PhasePose(joueur2)
-
+                print(grille)
 
             phase_jeu(3)
 
@@ -393,7 +406,9 @@ def phase_jeu(status):
             print("\nPhase de Mouvement Joueur vs Joueur")
             while len(joueur1.listePionsEnJeu) > 3 and len(joueur2.listePionsEnJeu) > 3:
                 Get_Info_Deplacement(joueur1)
+                print(grille)
                 Get_Info_Deplacement(joueur2)
+                print(grille)
 
             phase_jeu(4)
 
@@ -406,8 +421,6 @@ def phase_jeu(status):
 
             # if Restepion2 == 2:
             # print("Joueur 1 Win)
-
-
 
         # avec l'IA
         case 20:
@@ -432,17 +445,9 @@ def phase_jeu(status):
 
             phase_jeu(4)
 
-
-
-
 if __name__ == '__main__':
 
-    joueur1 = Joueur("Joueur 1", 9)
-    joueur2 = Joueur("Joueur 2", 9)
+    joueur1 = Joueur("Joueur 1", 9, 'X')
+    joueur2 = Joueur("Joueur 2", 9, '#')
 
     phase_jeu(1)
-
-
-
-
-
