@@ -2,15 +2,30 @@ from tkinter import *
 from tkinter.font import names
 from tkinter.ttk import *
 
-root = Tk()
-root.title("Jeu du Moulin®")
-root.geometry('1080x720')
-root.config(bg='#116562')
 
-mainframe = Frame(root)
+def popup():
+    fenetreA = Toplevel()		  # Popup -> Toplevel()
+    fenetreA.title('Infos')
+    Button(fenetreA, text='Quitter', command=fenetreA.destroy).pack(padx=10, pady=10)
+    fenetreA.transient(FenêtreP) 	  # Réduction popup impossible
+    fenetreA.grab_set()		  # Interaction avec fenetre FenêtreP impossible
+    FenêtreP.wait_window(fenetreA)   # Arrêt script principal
+
+
+FenêtreP = Tk()
+FenêtreP.title("Jeu du Moulin®")
+FenêtreP.geometry('1220x530+400+100')
+FenêtreP.config(bg='lightgray')
+
+fenetreA = Toplevel()	# Fenêtre auxiliaire -> Toplevel()
+fenetreA.title('Fenêtre auxiliaire')
+fenetreA.geometry('300x530+100+100')
+fenetreA.config(bg='lightgray')
+
+mainframe = Frame(FenêtreP)
 mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
-root.columnconfigure(0, weight=1)
-root.rowconfigure(0, weight=1)
+FenêtreP.columnconfigure(0, weight=1)
+FenêtreP.rowconfigure(0, weight=1)
 
 s = Style()
 s.configure('TFrame', background='gray')
@@ -89,6 +104,8 @@ def rouge(event):
         if can.type(item) == 'oval' and can.gettags(item)[0] != 'rouge' and can.gettags(item)[0] != 'bleu':
             # récupération du tag de l'inter permettant de faire le lien avec le GE
             inter = can.gettags(item)[0]
+            print(inter)
+            #Position et taille du point
             x1, y1, x2, y2 = can.coords(item[0])
             x1 -= 4
             y1 -= 4
@@ -111,6 +128,7 @@ def bleu(event):
         if can.type(item) == 'oval' and can.gettags(item)[0] != 'rouge' and can.gettags(item)[0] != 'bleu':
             # récupération du tag de l'inter permettant de faire le lien avec le GE
             inter = can.gettags(item)[0]
+            print(inter)
             x1, y1, x2, y2 = can.coords(item[0])
             x1 -= 4
             y1 -= 4
@@ -162,4 +180,4 @@ for i in range(nbPion):
 can.bind("<Button-1>", rouge)
 can.bind("<Button-3>", bleu)
 
-root.mainloop()
+FenêtreP.mainloop()
