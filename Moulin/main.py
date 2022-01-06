@@ -345,7 +345,6 @@ def Get_Info_Deplacement(joueurEnCours):
                                 voisinDipo.append(intersec)
         if len(voisinDipo) == 0:
             print("ce pion n'a pas de mouvement possible sélectionnez un autre pion")
-    VerifMoulin(joueurEnCours)
 
     destValide = False
     while destValide == False:
@@ -361,6 +360,8 @@ def Get_Info_Deplacement(joueurEnCours):
                 print("coordonnees invalides")
         else:
             print("coordonnees invalides")
+    VerifMoulin(joueurEnCours)
+
 
 def Get_Info_Saut(joueurEnCours):
     interDispo = []
