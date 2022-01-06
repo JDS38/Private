@@ -52,7 +52,6 @@ class Joueur:
         depart.pion = None
         depart.Occupee = False
 
-
 class Pion:
 
     def __init__(self, x, y, nom):
@@ -221,7 +220,7 @@ def phase_jeu(status):
                 ok = False
                 while ok  == False:
                     coo = input("\n Joueur 1 Entrez les coordonnées de pose sous la forme x,y: ")
-                    if int(coo[0]) and int(coo[2]):
+                    if coo[0].isnumeric() and coo[2].isnumeric():
                         if(joueur1.pose(int(coo[0]), int(coo[2])) == True):
                             ok = True
                         else:
@@ -229,11 +228,11 @@ def phase_jeu(status):
                     else:
                         print("coordonnees invalides")
                 print(joueur1.pionRestants)
-                VerifMoulin(joueur1)
+                #VerifMoulin(joueur1)
                 ok = False
                 while ok == False:
                     coo = input("\n Joueur 2 Entrez les coordonnées de pose sous la forme x,y: ")
-                    if int(coo[0]) and int(coo[2]):
+                    if coo[0].isnumeric() and coo[2].isnumeric():
                         if (joueur2.pose(int(coo[0]), int(coo[2])) == True):
                             ok = True
                         else:
@@ -241,7 +240,7 @@ def phase_jeu(status):
                     else:
                         print("coordonnees invalides")
                 print(joueur2.pionRestants)
-                VerifMoulin(joueur2)
+                #VerifMoulin(joueur2)
 
 
             phase_jeu(3)
@@ -252,64 +251,58 @@ def phase_jeu(status):
 
             #while len(joueur1.listePionsEnJeu)>2 or len(joueur2.listePionsEnJeu)>2 :
 
-
-            '''
-            
             voisinDipo = []
             selectedPion = None
             depart = None
             coopion = ""
             print("\nPhase de Mouvement Joueur vs Joueur")
-            print("Joueur 1 sélectionnez un pion parmi:")
-            for pion in joueur1.listePionsEnJeu:
-                print(pion.X, pion.Y)
-            cooValide = False
-            while cooValide == False:
-                coopion = input("Entrez les coordonées du pion sous la forme X,Y")
-                if int(coopion[0]) and int(coopion[2]):
-                    for pion in joueur1.listePionsEnJeu:
-                        if pion.X == int(coopion[0]) and pion.Y == int(coopion[2]):
-                            cooValide == True
-                            selectedPion = pion
-                            break
-                else:
-                    print("Entrez des coordonnées valides")
 
-                if cooValide == False:
-                    print("Vous n'avez aucun pion sur ces coordonnées")
+            while len(voisinDipo) == 0:
+                print("Joueur 1 sélectionnez un pion parmi:")
+                for pion in joueur1.listePionsEnJeu:
+                    print(pion.X, pion.Y)
+                cooValide = False
+                while cooValide == False:
+                    coopion = input("Entrez les coordonées du pion sous la forme X,Y")
+                    if coopion[0].isnumeric() and coopion[2].isnumeric():
+                        for pion in joueur1.listePionsEnJeu:
+                            if pion.X == int(coopion[0]) and pion.Y == int(coopion[2]):
+                                cooValide = True
+                                selectedPion = pion
+                                break
+                    else:
+                        print("Entrez des coordonnées valides")
 
-            for inter in inters:
-                if selectedPion.X == inter.X and selectedPion.Y == inter.Y:
-                    depart = inter
-                if inter.X == int(coopion[0]) and inter.y == int(coopion[2]):
-                    voisins = inter.Voisins[inter.Nom]
+                    if cooValide == False:
+                        print("Vous n'avez aucun pion sur ces coordonnées")
 
-                    print("Intersections voisines disponibles: ")
-                    for intersec in inters:
-                        for voisin in voisins:
-                            if intersec.Nom == voisin:
-                                if intersec.Occupee == False:
-                                    print(intersec.X, intersec.Y)
-                                    voisinDipo.append(intersec)
+                for inter in inters:
+                    if selectedPion.X == inter.X and selectedPion.Y == inter.Y:
+                        depart = inter
+                    if inter.X == int(coopion[0]) and inter.Y == int(coopion[2]):
+                        voisins = inter.Voisins[inter.Nom]
+
+                        print("Intersections voisines disponibles: ")
+                        for intersec in inters:
+                            for voisin in voisins:
+                                if intersec.Nom == voisin:
+                                    if intersec.Occupee == False:
+                                        print(intersec.X, intersec.Y)
+                                        voisinDipo.append(intersec)
+                if len(voisinDipo) == 0:
+                    print("ce pion n'a pas de mouvement possible sélectionnez un autre pion")
 
             destValide = False
             while destValide == False:
                 destCoo = input("Entrez la destination sous la forme X,Y")
-                if int(destCoo[0]) and int(destCoo[2]):
+                if destCoo[0].isnumeric() and destCoo[2].isnumeric():
                     for v in voisinDipo:
-                        if v.X == destCoo[0] and v.Y == destCoo:
+                        if v.X == int(destCoo[0]) and v.Y == int(destCoo[2]):
+                            print(f"pion({selectedPion.X}, {selectedPion.Y}) déplacé en ({v.X}, {v.Y})")
                             joueur1.deplacement(depart, selectedPion, v)
                             destValide = True
                 else:
                     print("coordonnees invalides")
-            
-            '''
-
-
-            # MouvementJ1
-            # Moulin?
-            # MouvementJ2
-            # Moulin?
 
             phase_jeu(4)
 
