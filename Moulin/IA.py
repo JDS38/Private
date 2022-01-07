@@ -30,6 +30,7 @@ def print_board(board):
 game_over = False
 FREEZONE = 1
 def Ai():
+    turn = 1
     if turn == Ai and not game_over:
         Pos = int(math.floor(FREEZONE))
         if valide_location(FREEZONE):
