@@ -1,4 +1,4 @@
-#import Interface_Graphique
+import Interface_Graphique
 
 inters = []
 moulins = []
@@ -25,7 +25,6 @@ class Damier:
                         res += str(self.area[i][j]) + " "
                 res += "\n"
         return res
-
 
 grille = Damier()
 
@@ -61,7 +60,6 @@ class Joueur:
         depart.pion = None
         depart.Occupee = False
 
-
 class Pion:
 
     def __init__(self, x, y, nom):
@@ -69,7 +67,6 @@ class Pion:
         self.Y = y
         self.color = nom
         self.InMoulin = False
-
 
 class Intersection:
     def __init__(self, nom, x, y):
@@ -158,7 +155,6 @@ def VerifMoulin(joueurencours):
                                 print("Il y a donc : ", PionMoulinJ1, "pions dans un moulin")
                                 CaptureInMoulin(joueur1)
 
-
 def Capture(joueuradverse):
 
     capturee = False
@@ -244,7 +240,6 @@ def PhasePose(joueuractuel):
     print(f"\npions restant à poser pour le {joueuractuel.nom}: {joueuractuel.pionRestants}\n")
     VerifMoulin(joueuractuel)
 
-
 def init_game():
 
     inters.append(Intersection("inter1", 1, 1))
@@ -316,7 +311,7 @@ def Get_Info_Deplacement(joueurEnCours):
         affiche_pion_mvt_possible(joueurEnCours)
         cooValide = False
         while cooValide == False:
-            coopion = input("Entrez les coordonées du pion sous la forme X,Y")
+            coopion = input("Entrez les coordonées du pion sous la forme x,y: ")
             if len(coopion) >= 3:
                 if coopion[0].isnumeric() and coopion[2].isnumeric():
                     for pion in joueurEnCours.listePionsEnJeu:
@@ -362,7 +357,6 @@ def Get_Info_Deplacement(joueurEnCours):
             print("coordonnees invalides")
     VerifMoulin(joueurEnCours)
 
-
 def Get_Info_Saut(joueurEnCours):
     interDispo = []
     selectedPion = None
@@ -372,7 +366,7 @@ def Get_Info_Saut(joueurEnCours):
     affiche_liste_pion_en_jeu(joueurEnCours)
     cooValide = False
     while cooValide == False:
-        coopion = input("Entrez les coordonées du pion sous la forme X,Y")
+        coopion = input("Entrez les coordonées du pion sous la forme x,y: ")
         if len(coopion) >= 3:
             if coopion[0].isnumeric() and coopion[2].isnumeric():
                 for pion in joueurEnCours.listePionsEnJeu:
@@ -399,7 +393,7 @@ def Get_Info_Saut(joueurEnCours):
 
     destValide = False
     while destValide == False:
-        destCoo = input("Entrez la destination sous la forme X,Y")
+        destCoo = input("Entrez la destination sous la forme x,y: ")
         if len(destCoo) >=3:
             if destCoo[0].isnumeric() and destCoo[2].isnumeric():
                 for i in interDispo:
@@ -433,7 +427,6 @@ def affiche_pion_mvt_possible(joueurEnCours):
                             break
                     if found == True:
                         break
-
 
 def phase_jeu(status):
     match status:

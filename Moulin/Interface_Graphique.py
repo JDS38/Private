@@ -1,34 +1,66 @@
 from tkinter import *
 from tkinter.font import names
 from tkinter.ttk import *
+import main
+
+inters = []
+moulins = []
 
 
-def popup():
-    fenetreA = Toplevel()		  # Popup -> Toplevel()
-    fenetreA.title('Infos')
-    Button(fenetreA, text='Quitter', command=fenetreA.destroy).pack(padx=10, pady=10)
-    fenetreA.transient(FenêtreP) 	  # Réduction popup impossible
-    fenetreA.grab_set()		  # Interaction avec fenetre FenêtreP impossible
-    FenêtreP.wait_window(fenetreA)   # Arrêt script principal
+def fctSousMenu1():  # Action associée au sous-menu 1 du menu 1
+    print('J vs J')
 
-def choixBR():  # Fonction associée au boutons radio choix du mode de jeu
-    print('Mode de jeux choisie dans l interface graphique :', str(svRadio.get()))
+def fctSousMenu2():  # Action associée au sous-menu 1 du menu 1
+    print('J vs IA')
+
+def fctSousMenu3():  # Action associée au sous-menu 1 du menu 1
+    print('Sauver')
+
+def fctSousMenu4():  # Action associée au sous-menu 1 du menu 1
+    print('Charger')
+
+def reinit():
+    """Cette fonction ré-initialise les variables globales."""
 
 
+
+
+
+
+#----------------------------------------Initialisation fenêtre Graphique------------------------------------------
 FenêtreP = Tk()
 FenêtreP.title("Jeu du Moulin®")
-FenêtreP.geometry('1220x530+400+100')
+FenêtreP.geometry('1220x595+400+100')
+FenêtreP.iconbitmap('C:\\Users\\JDSXB\\Documents\\GitHub\\Private\\Moulin\\logo.ico')
 FenêtreP.config(bg='lightgray')
+FenêtreP.option_add('*tearOff', FALSE)  # Nécessaire avec windows
 
-fenetreA = Toplevel()	# Fenêtre auxiliaire -> Toplevel()
-fenetreA.title('Fenêtre auxiliaire')
-fenetreA.geometry('300x530+100+100')
-fenetreA.config(bg='lightgray')
+#----------------------------------------Menu------------------------------------------
+menubar = Menu(FenêtreP)  # Création d'un objet "barre de menus"
+FenêtreP['menu'] = menubar  # Association de l'objet à la fenêtre
 
-svRadio = StringVar()  # Variable de type str associée à l'état du bouton
-svRadio.set('1')  # Choix de la valeur par défaut (à l'ouverture de la fenêtre)
-Radiobutton(fenetreA, text='Joueur vs Joueur', variable=svRadio, value='1', command=choixBR).pack(padx=10, pady=2, anchor=W)
-Radiobutton(fenetreA, text='Joueur vs IA', variable=svRadio, value='2', command=choixBR).pack(padx=10, pady=2, anchor=W)
+# Ajout de menus
+menu1 = Menu(menubar)
+menu2 = Menu(menubar)
+menu3 = Menu(menubar)
+# Ajout de sous-menus
+menubar.add_cascade(menu=menu1, label='Démarrer une partie')
+menubar.add_cascade(menu=menu2, label='Sauvegarder la partie')
+menubar.add_cascade(menu=menu3, label='Charger une partie...')
+# Association de fonctions aux menus et sous-menus de démarrage de parties
+menu1.add_command(label='Joueur vs Joueur', command=fctSousMenu1)
+menu1.add_separator()  # Barre de séparation
+menu1.add_command(label='Joueur vs IA', command=fctSousMenu2)
+# Association de fonctions aux menus et sous-menus de sauvegarde
+menu2.add_command(label='Sauvegarder sous', command=fctSousMenu3)
+
+# Association de fonctions aux menus et sous-menus charge de partie
+# for save in storage...
+menu3.add_command(label='nom de la partie', command=fctSousMenu4)
+#menu3.add_separator()  # Barre de séparation aprés
+
+
+
 
 mainframe = Frame(FenêtreP)
 mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
@@ -42,69 +74,74 @@ s2 = Style()
 s2.configure('new.TFrame', background='lightgray')
 
 sousframe1 = Frame(mainframe, relief=SUNKEN, style='new.TFrame')
-sousframe1.grid(row=0, column=0, sticky=(W, E), padx=10, pady=10)
+sousframe1.grid(row=0, column=0, sticky=(W, E), padx=10, pady=25)
 sousframe2 = Frame(mainframe, relief=SUNKEN, style='new.TFrame')
-sousframe2.grid(row=0, column=1, sticky=(N, E), padx=10, pady=10)
+sousframe2.grid(row=0, column=1, sticky=(N, E), padx=10, pady=25)
 
 
 can = Canvas(sousframe1, width=500, heigh=500, bg='white')
 can.grid(row=0, column=0, sticky=(W, N), padx=10, pady=5)
 
+#cadre ext
 can.create_line(10, 10, 490, 10)
 can.create_line(10, 490, 490, 490)
 can.create_line(10, 10, 10, 490)
 can.create_line(490, 10, 490, 490)
 
+#cadre millieu
 can.create_line(80, 80, 420, 80)
 can.create_line(80, 420, 420, 420)
 can.create_line(80, 80, 80, 420)
 can.create_line(420, 80, 420, 420)
 
+#cadre intérieure
 can.create_line(150, 150, 350, 150)
 can.create_line(150, 350, 350, 350)
 can.create_line(150, 150, 150, 350)
 can.create_line(350, 150, 350, 350)
 
-can.create_line(245, 10, 245, 150)
-can.create_line(245, 350, 245, 490)
-can.create_line(10, 245, 150, 245)
-can.create_line(350, 245, 490, 245)
+#croix
+can.create_line(249, 10, 249, 150)
+can.create_line(249, 350, 249, 490)
+can.create_line(10, 249, 150, 249)
+can.create_line(350, 249, 490, 249)
 
 
 # ligneInter 1
 can.create_oval(5, 5, 15, 15, fill='black', tags="inter1")
-can.create_oval(240, 5, 250, 15, fill='black', tags="inter2")
+can.create_oval(244, 5, 254, 15, fill='black', tags="inter2")
 can.create_oval(485, 5, 495, 15, fill='black', tags="inter3")
 # ligneInter 2
 can.create_oval(75, 75, 85, 85, fill='black', tags="inter4")
-can.create_oval(240, 75, 250, 85, fill='black', tags="inter5")
+can.create_oval(244, 75, 254, 85, fill='black', tags="inter5")
 can.create_oval(415, 75, 425, 85, fill='black', tags="inter6")
 # ligneInter 3
 can.create_oval(145, 145, 155, 155, fill='black', tags="inter7")
-can.create_oval(240, 145, 250, 155, fill='black', tags="inter8")
+can.create_oval(244, 145, 254, 155, fill='black', tags="inter8")
 can.create_oval(345, 145, 355, 155, fill='black', tags="inter9")
 # ligneInter 4
-can.create_oval(5, 240, 15, 250, fill='black', tags="inter10")
-can.create_oval(75, 240, 85, 250, fill='black', tags="inter11")
-can.create_oval(145, 240, 155, 250, fill='black', tags="inter12")
-can.create_oval(345, 240, 355, 250, fill='black', tags="inter13")
-can.create_oval(415, 240, 425, 250, fill='black', tags="inter14")
-can.create_oval(485, 240, 495, 250, fill='black', tags="inter15")
+can.create_oval(5, 244, 15, 254, fill='black', tags="inter10")
+can.create_oval(75, 244, 85, 254, fill='black', tags="inter11")
+can.create_oval(145, 244, 155, 254, fill='black', tags="inter12")
+can.create_oval(345, 244, 355, 254, fill='black', tags="inter13")
+can.create_oval(415, 244, 425, 254, fill='black', tags="inter14")
+can.create_oval(485, 244, 495, 254, fill='black', tags="inter15")
 # ligneInter 5
 can.create_oval(145, 345, 155, 355, fill='black', tags="inter16")
-can.create_oval(240, 345, 250, 355, fill='black', tags="inter17")
+can.create_oval(244, 345, 254, 355, fill='black', tags="inter17")
 can.create_oval(345, 345, 355, 355, fill='black', tags="inter18")
 # ligneInter 6
 can.create_oval(75, 415, 85, 425, fill='black', tags="inter19")
-can.create_oval(240, 415, 250, 425, fill='black', tags="inter20")
+can.create_oval(244, 415, 254, 425, fill='black', tags="inter20")
 can.create_oval(415, 415, 425, 425, fill='black', tags="inter21")
 # ligneInter 7
 can.create_oval(5, 485, 15, 495, fill='black', tags="inter22")
-can.create_oval(240, 485, 250, 495, fill='black', tags="inter23")
+can.create_oval(244, 485, 254, 495, fill='black', tags="inter23")
 can.create_oval(485, 485, 495, 495, fill='black', tags="inter24")
 
 
 # A Modifier
+
 def rouge(event):
     clic = event.x, event.y
     item = can.find_closest(*clic)
@@ -163,6 +200,18 @@ Label(sousframe2, text=texte, font='impact', background='white', relief=GROOVE).
 canPion = Canvas(sousframe2, width=506, heigh=70, bg='grey')
 canPion.grid(row=2, column=0, sticky=(W), padx=10, pady=10)
 
+##-----Création des zones de texte-----##
+message=Label(FenêtreP, text='Aux croix de jouer')
+message.grid(row = 0, column = 0, columnspan=1, padx=215, pady=3, sticky = N+W)
+
+
+##-----Création des boutons-----##
+bouton_quitter = Button(FenêtreP, text='Quitter', command=FenêtreP.destroy)
+bouton_quitter.grid(row = 0, column = 0, padx=458, pady=3, sticky = S+W)
+
+bouton_reload = Button(FenêtreP, text='Recommencer', command=reinit)
+bouton_reload.grid(row = 0, column = 0, padx=222, pady=3, sticky = S+W)
+
 # A rendre dynamique avec le GE
 nbPion = 9
 x1 = 10
@@ -185,7 +234,14 @@ for i in range(nbPion):
     x1 += 30
     x2 += 30
 
-can.bind("<Button-1>", rouge)
-can.bind("<Button-3>", bleu)
 
-FenêtreP.mainloop()
+can.bind("<Button-1>",bleu)
+can.bind("<Button-3>",rouge)
+
+
+##-----Programme principal-----##
+
+
+
+FenêtreP.mainloop()                      # Boucle d'attente des événements
+
