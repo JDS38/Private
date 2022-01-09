@@ -31,7 +31,6 @@ def reinit():
 FenêtreP = Tk()
 FenêtreP.title("Jeu du Moulin®")
 FenêtreP.geometry('1220x595+400+100')
-FenêtreP.iconbitmap('C:\\Users\\JDSXB\\Documents\\GitHub\\Private\\Moulin\\logo.ico')
 FenêtreP.config(bg='lightgray')
 FenêtreP.option_add('*tearOff', FALSE)  # Nécessaire avec windows
 
