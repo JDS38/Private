@@ -1,4 +1,3 @@
-import Interface_Graphique
 
 inters = []
 moulins = []
@@ -477,12 +476,10 @@ def phase_jeu(status):
         case 4:
             print()
             print("Fin de partie")
-
-            # if Restepion1 == 2:
-            # print("Joueur 2 Win)
-
-            # if Restepion2 == 2:
-            # print("Joueur 1 Win)
+            if len(joueur1.listePionsEnJeu) == 2:
+                print("Joueur 2 Win")
+            if len(joueur2.listePionsEnJeu) == 2:
+                print("Joueur 1 Win")
 
         # avec l'IA
         case 20:
