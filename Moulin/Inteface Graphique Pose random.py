@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter.font import names
 from tkinter.ttk import *
-import main
+
 
 inters = []
 moulins = []
@@ -201,7 +201,7 @@ canPion = Canvas(sousframe2, width=506, heigh=70, bg='grey')
 canPion.grid(row=2, column=0, sticky=(W), padx=10, pady=10)
 
 ##-----Création des zones de texte-----##
-message=Label(FenêtreP, text='Aux croix de jouer')
+message=Label(FenêtreP, text='Tour du joueur 1')
 message.grid(row = 0, column = 0, columnspan=1, padx=215, pady=3, sticky = N+W)
 
 
